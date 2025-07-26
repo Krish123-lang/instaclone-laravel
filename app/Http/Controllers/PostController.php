@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('users')->latest()->get();
+        $posts = Post::with('user')->latest()->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -45,7 +45,8 @@ class PostController extends Controller
             'caption' => $data['caption'],
             'image_path' => $imagePath
         ]);
-        return redirect('/profile/' . auth()->user()->id);
+        // return redirect('/profile/' . auth()->user()->id);
+        return to_route('posts.index');
     }
 
     /**

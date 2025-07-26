@@ -42,7 +42,7 @@ class ProfileController extends Controller
             $data['profile_image'] = $imagePath;
 
             $user->update($data);
-            return redirect('/profile/{$user->id}');
+            return redirect('/profile/' . $user->id);
         }
     }
 }
