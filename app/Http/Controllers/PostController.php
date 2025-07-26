@@ -78,8 +78,16 @@ class PostController extends Controller
             abort(403, 'Unauthorized Action!');
         }
         $data = $request->validate([
-            'caption' => 'required'
+            'caption' => 'sometimes',
+            'image' => 'sometimes|image|mimes:png,jpg,jpeg,gif|max:2048'
         ]);
+
+        // If a new image is uploaded, delete the old one and store the new one
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($post->image_path);
+            $imagePath = $request->file('image')->store('uploads', 'public');
+            $data['image_path'] = $imagePath;
+        }
 
         $post->update($data);
         return redirect('/posts/' . $post->id);
